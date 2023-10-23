@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+  database:
+    image: postgres:14.7-alpine
+    environment: 
+      POSTGRES_DB: davila_crm
+      POSTGRES_USER: crm
+      POSTGRES_HOST: database
+      POSTGRES_PASSWORD: "$up3r$3cur3Pa$$"
+    ports:
+      - "55432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "crm"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  redis:
+    image: redis:7.0.10-alpine
+    restart: always
+    ports:
+      - "56379:6379"
+    command: redis-server --save 20 1 --loglevel warning
+  crm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      REDIS_HOST: redis
+      POSTGRES_DB: davila_crm
+      POSTGRES_USER: crm
+      POSTGRES_HOST: database
+      POSTGRES_PASSWORD: "$up3r$3cur3Pa$$"
+    ports:
+      - "8081:8000"
+    volumes:
+      - ./:/opt/app:rw
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:8000/health/"]
+      interval: 30s
+      timeout: 5s
+    command: python manage.py  runserver 0.0.0.0:8000

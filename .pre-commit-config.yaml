@@ -3,9 +3,9 @@ repos:
     rev: v4.4.0
     hooks:
       - id: check-added-large-files
-      - id: check-merge-conflicts
+      - id: check-merge-conflict
       - id: debug-statements
-      - id: detect-private-keys
+      - id: detect-private-key
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: name-tests-test
