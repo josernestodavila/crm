@@ -1,16 +1,16 @@
 version: "3.7"
 services:
   database:
-    image: postgres:14.7-alpine
+    image: postgres:15.4-alpine
     environment: 
-      POSTGRES_DB: davila_crm
-      POSTGRES_USER: crm
-      POSTGRES_HOST: database
-      POSTGRES_PASSWORD: "$up3r$3cur3Pa$$"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "55432:5432"
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "crm"]
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -26,10 +26,10 @@ services:
       dockerfile: Dockerfile
     environment:
       REDIS_HOST: redis
-      POSTGRES_DB: davila_crm
-      POSTGRES_USER: crm
-      POSTGRES_HOST: database
-      POSTGRES_PASSWORD: "$up3r$3cur3Pa$$"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "8081:8000"
     volumes:
