@@ -1,0 +1,6 @@
+[tool.ruff]
+line-length = 120
+# E203: whitespace before ':'
+# E501: line too long
+ignore = ["E203", "E501"]
+target-version = "py312"
